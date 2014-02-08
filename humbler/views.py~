@@ -1,0 +1,31 @@
+from flask import Flask, render_template, request, redirect
+import helpers
+
+app = Flask(__name__)
+
+charities = {}
+content = {}
+
+@app.route('/?content')
+
+def listContent():
+    printf("content");
+    return content
+
+
+@app.route('/?charities')
+
+def listCharities():
+    printf("charity");
+    return charity
+
+
+@app.route('/', methods=['GET', 'POST'])
+
+def home():
+    printf("foo");
+    return render_template('index.html')
+    
+if __name__ == '__main__':
+    printf("foo");
+    app.run('0.0.0.0' , debug=True)

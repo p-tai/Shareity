@@ -76,20 +76,25 @@ def findContent(tag):
 
 @app.route('/content/purchase/<tag>', methods=["POST"])
 def purchase(tag):
+    currentUser = (request.form['currentUser'])
     try:
         tocreator = float(request.form['creator'])
         tocharity = float(request.form['charity'])
     except ValueError:
         return render_template(pages['home'])
     
-    print(tocreator)
-    print(tocharity)
+    pay1 = "%.2f" %tocreator
+    pay2 = "%.2f" %tocharity
     
     for email in users:
         if tag in users[email]:
             
-            #sendPayment(email,tocreator)
-            #sendPayment(charities["malarianomore"],tocharity)
+            body = helpers.makeBody(users[email][tag][1],users[email][tag][0],email,"Malaria no More",pay1,pay2)
+            
+            helpers.sendMail(currentUser, body)
+            
+            #helpers.sendPayment(email, currentUser, pay1)
+            #helpers.sendPayment("someemail@donation.org", currentUser, pay2)
             
             return render_template(pages['paymentAdded'],
             name=users[email][tag][1], 

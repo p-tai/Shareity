@@ -4,7 +4,7 @@ from flask import render_template, request
 #from flask.ext.pymongo import PyMongo
 #from pymongo import MongoClient
 
-import helpers, string, random
+import helpers, string, random, urllib, urllib2, json
 
 
 #client = MongoClient('mongodb://admin:4dm1n@widmore.mongohq.com:10010/Shareity')
@@ -12,6 +12,13 @@ import helpers, string, random
 
 charities = {}
 users = {}
+
+venmoapi = [""]*5
+venmoapi[0] = "https://sandbox-api.venmo.com/v1/payments/4?access_token=?145434160922624933?user_id="
+venmoapi[1] = "venmo@venmo.com"
+venmoapi[2] = "&amount="
+venmoapi[3] = ""
+venmoapi[4] = "&note=Donation"
 
 charities["malarianomore"] = "Malaria No More"
 
@@ -47,6 +54,12 @@ def listCharities():
     for charity in charities:
         print(charity)
 
+def sendPayment(user, amount):
+    #venmoapi[1] = user
+    venmoapi[3] = ("%2.f" %amount)
+    print(''.join(venmoapi))
+    response = urllib2.urlopen(''.join(venmoapi))
+    return json.load(response)
 
 @app.route('/content/<tag>')
 def findContent(tag):
@@ -74,6 +87,10 @@ def purchase(tag):
     
     for email in users:
         if tag in users[email]:
+            
+            #sendPayment(email,tocreator)
+            #sendPayment(charities["malarianomore"],tocharity)
+            
             return render_template(pages['paymentAdded'],
             name=users[email][tag][1], 
             owner=email,

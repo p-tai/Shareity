@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.png">
     <title>
-      Starter Template for Bootstrap
+      Shareity - Manage Contacts
     </title>
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
     rel="stylesheet">
@@ -65,8 +65,11 @@
           <!-- List group -->
           <ul class="list-group" style="text-align: left;">
           {% for ID in users[email] %}
-            <li class="list-group-item">{{"Content URL: " + users[email][ID] + " -> Tag: "}} 
-              <a href="/content/{{ID}}">{{ID}}</a>
+            <li class="list-group-item"><a href="{{users[email][ID][0]}}">Link to Content</a>
+            <p></p>
+            <p>Tag: 
+              <a href="/content/{{ID}}">{{ID}}</a> 
+            </p> 
             </li>
           {% endfor %}
       {% endfor %}

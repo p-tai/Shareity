@@ -1,4 +1,4 @@
-from humbler import app
+from shareity import app
 from flask import render_template, request
 import helpers, string, random
 

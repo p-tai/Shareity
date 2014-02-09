@@ -2,4 +2,4 @@ from flask import Flask
 
 app = Flask(__name__)
 
-from humbler import views
+from shareity import views

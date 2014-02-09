@@ -53,18 +53,24 @@
     <div class="container">
       <div class="starter-template">
         <h2>
-          Create a Content Page
+          Manage Content
         </h2>
       </div>
-      <form action = "createContent" method="POST">
-        <input type="text" placeholder="Email" class="form-control" name="email">
-        <p></p>
-        <input type="text" placeholder="Content URL" class="form-control" name="url">
-        <p></p>
-        <button type="submit" class="btn btn-primary pull-right">
-          Share
-        </button>
-      </form>
+      {% for email in users%}
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          
+          <div class="panel-heading" style="text-align: left;"> 
+          Email:  {{email}}
+          </div>
+
+          <!-- List group -->
+          <ul class="list-group" style="text-align: left;">
+          {% for ID in users[email] %}
+            <li class="list-group-item">{{"Content URL: " + users[email][ID] + " -> Tag: " +  ID}}</li>
+          {% endfor %}
+      {% endfor %}
+      
     </div>
     
     <!-- /.container -->

@@ -56,7 +56,7 @@ def createContent():
     return render_template(pages['createContent'])
     
 @app.route('/createContent', methods=['POST'])
-def createContentPOST():
+def createContentPOST(ID=""):
     email = request.form['email'].lower()
     contentid = request.form['url'].lower()
     
@@ -66,14 +66,15 @@ def createContentPOST():
         users[email] = {}
     
     #search to see if the content url was already added
-    for url in users[email]:
-        if users[email][url] == contentid:
-            return render_template(pages['addSuccess'])
+    for ID in users[email]:
+        if users[email][ID] == contentid:
+            return render_template(pages['addSuccess'],ID=ID)
     
     #create a random tag for the contentid
-    users[email][random_string()] = contentid
+    ID = random_string()
+    users[email][ID] = contentid
     
-    return render_template(pages['addSuccess'])
+    return render_template(pages['addSuccess'],ID=ID)
 
 #@app.route('/charities')
 

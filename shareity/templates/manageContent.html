@@ -25,7 +25,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Shareity</a>
+          <a class="navbar-brand" href="">Shareity</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -34,9 +34,7 @@
             </li>
             <li>
             </li>
-            <li>
-              <a href="#about">About</a>
-            </li>
+            
         </div>
       </div>
     </div>
@@ -67,7 +65,9 @@
           <!-- List group -->
           <ul class="list-group" style="text-align: left;">
           {% for ID in users[email] %}
-            <li class="list-group-item">{{"Content URL: " + users[email][ID] + " -> Tag: " +  ID}}</li>
+            <li class="list-group-item">{{"Content URL: " + users[email][ID] + " -> Tag: "}} 
+              <a href="/content/{{ID}}">{{ID}}</a>
+            </li>
           {% endfor %}
       {% endfor %}
       

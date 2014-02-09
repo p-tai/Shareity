@@ -1,9 +1,19 @@
 from shareity import app
 from flask import render_template, request
+
+#from flask.ext.pymongo import PyMongo
+#from pymongo import MongoClient
+
 import helpers, string, random
+
+
+#client = MongoClient('mongodb://admin:4dm1n@widmore.mongohq.com:10010/Shareity')
+#client = client.Shareity
 
 charities = {}
 users = {}
+
+charities["malarianomore"] = "Malaria No More"
 
 pages = {}
 pages["createContent"] = "screen-1e2fd0b7fb.html"
@@ -12,6 +22,7 @@ pages["makePayment"] = "screen-74dbcb1fe3.html"
 pages["home"] = "screen-b34f60abef.html"
 pages["about"] =  "screen-ed5c332932.html"
 pages["manageContent"] = "manageContent.html"
+pages["paymentAdded"] = "paymentAdded.html"
 
 def random_string():
     length = 12
@@ -41,10 +52,35 @@ def listCharities():
 def findContent(tag):
     for email in users:
         if tag in users[email]:
-            return render_template(pages['makePayment'])
+            return render_template(pages['makePayment'],
+            name=users[email][tag][1], 
+            owner=email,
+            charity=charities["malarianomore"],
+            tag=tag)
         print(email)
         print(tag)
     return render_template(pages['home'])
+
+@app.route('/content/purchase/<tag>', methods=["POST"])
+def purchase(tag):
+    try:
+        tocreator = float(request.form['creator'])
+        tocharity = float(request.form['charity'])
+    except ValueError:
+        return render_template(pages['home'])
+    
+    print(tocreator)
+    print(tocharity)
+    
+    for email in users:
+        if tag in users[email]:
+            return render_template(pages['paymentAdded'],
+            name=users[email][tag][1], 
+            owner=email,
+            charity=charities["malarianomore"],
+            url=users[email][tag][0],
+            tocreator=tocreator,
+            tocharity=tocharity)
 
 @app.route('/manageContent')
 def manageContent():
@@ -59,7 +95,7 @@ def createContent():
 def createContentPOST(ID=""):
     email = request.form['email'].lower()
     contentid = request.form['url'].lower()
-    
+    name = request.form['name']
     #check if the user has added content before.
     if email not in users:
         #If not, create a new user.
@@ -67,12 +103,12 @@ def createContentPOST(ID=""):
     
     #search to see if the content url was already added
     for ID in users[email]:
-        if users[email][ID] == contentid:
+        if contentid in users[email][ID]:
             return render_template(pages['addSuccess'],ID=ID)
     
     #create a random tag for the contentid
     ID = random_string()
-    users[email][ID] = contentid
+    users[email][ID] = [contentid, name]
     
     return render_template(pages['addSuccess'],ID=ID)
 
